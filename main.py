@@ -2,6 +2,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QDialog
 from PyQt5.QtCore import pyqtSlot
 from PyQt5 import QtWidgets
+import pandas as pd
 from ui import *
 from mdialog import *
 import qtmodern.styles
@@ -9,6 +10,7 @@ import qtmodern.windows
 import utils
 import matplotlib.pyplot as plt
 from pathlib import Path
+import os
 
 
 class MyWindow(QtWidgets.QMainWindow):
@@ -26,11 +28,11 @@ class MyWindow(QtWidgets.QMainWindow):
         self.mpdialog = MDialog()
         self.mpdialog.setupUi(self.pdialog, text="Payment")
         self.pdialog.setWindowFlags(self.pdialog.windowFlags() & ~QtCore.Qt.WindowContextHelpButtonHint)
-        # data
-        data = Path("info.txt")
-        self.file = open(data, "a+")
-        self.file.seek(0)
-        self.data = self.file.read()
+        # data (pandas rn)
+        if os.path.isfile('data.csv'):
+            self.df = pd.read_csv('data.csv')
+        else:
+            self.df = pd.DataFrame(columns=['Type', 'Amount', 'Time'])
         # signals
         self.ui.pushButton_4.clicked.connect(self.addNewWaste)
         self.ui.pushButton_5.clicked.connect(self.addNewPayment)
@@ -60,19 +62,17 @@ class MyWindow(QtWidgets.QMainWindow):
         else:
             raise Exception("Wrong type of action")
         if resp == QtWidgets.QDialog.Accepted:
-            res = f"{action}\t{dialog.lineEdit.text()}\t{utils.get_today_data()}"
-            print(res, file=self.file)
+            self.df.loc[len(self.df.index)] = [action, dialog.lineEdit.text(), utils.get_today_data()]
             dialog.lineEdit.clear()
-            self.data += res + '\n'
             self.updateGraph()
 
     def closeEvent(self, event):
         close = QtWidgets.QMessageBox.question(self,
                                                "QUIT",
-                                               "Are you sure want to stop Skimper?",
+                                               "Are you sure want to stop Hoarder?",
                                                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if close == QtWidgets.QMessageBox.Yes:
-            self.file.close()
+            self.df.to_csv('data.csv',index=False)
             event.accept()
         else:
             event.ignore()

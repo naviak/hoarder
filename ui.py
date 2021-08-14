@@ -57,8 +57,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Skimper"))
-        self.label.setText(_translate("MainWindow", "Skimper"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Hoarder"))
+        self.label.setText(_translate("MainWindow", "Hoarder"))
         self.pushButton_2.setText(_translate("MainWindow", "Weekly"))
         self.pushButton_3.setText(_translate("MainWindow", "Monthly"))
         self.pushButton.setText(_translate("MainWindow", "6 Months"))
