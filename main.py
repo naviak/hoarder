@@ -1,15 +1,11 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QDialog
-from PyQt5.QtCore import pyqtSlot
-from PyQt5 import QtWidgets
 import pandas as pd
 from ui import *
 from mdialog import *
 import qtmodern.styles
 import qtmodern.windows
 import utils
-import matplotlib.pyplot as plt
-from pathlib import Path
 import os
 
 
@@ -72,7 +68,7 @@ class MyWindow(QtWidgets.QMainWindow):
                                                "Are you sure want to stop Hoarder?",
                                                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if close == QtWidgets.QMessageBox.Yes:
-            self.df.to_csv('data.csv',index=False)
+            self.df.to_csv('data.csv', index=False)
             event.accept()
         else:
             event.ignore()
